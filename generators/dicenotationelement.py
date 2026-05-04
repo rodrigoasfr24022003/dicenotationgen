@@ -222,4 +222,26 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             for i in explosionSubmorphemes:
                 explosionString += i
             diceMorphemes.append(explosionString)
-            
+            choice7 = sysr.choice(["","conditional","noReroll"])
+            if choice7 == "":
+                diceMorphemes.append("R")
+                isRerollLimited = sysr.choices([True, False],weights=[0.1,0.9],k=1)[0]
+                if isRerollLimited:
+                    diceMorphemes.append(str(sysr.randint(minExplosionLimit,maxExplosionLimit)))
+            elif choice7 == "conditional":
+                diceMorphemes.append(conditionHelper("R", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues))
+                isRerollLimited = sysr.choices([True, False],weights=[0.1,0.9],k=1)[0]
+                if isRerollLimited:
+                    diceMorphemes.append(str(sysr.randint(minExplosionLimit,maxExplosionLimit)))
+            choice8 = sysr.choice(["","conditional","noCount"])
+            if choice8 == "":
+                diceMorphemes.append("#")
+            elif choice8 == "conditional":
+                diceMorphemes.append(conditionHelper("#", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues))
+            choice9 = sysr.choices(["","T","Ti","Tw","Twi"], k=1, weights=[1,0.1,0.1,0.1,0.01])[0]
+            diceMorphemes.append(choice9)
+            #multi-result support will be added later
+            out = ""
+            for i in diceMorphemes:
+                out += i
+            return out
