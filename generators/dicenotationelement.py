@@ -145,8 +145,9 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             return sysr.randint(min_dice, max_dice)+diceTemplate
     else:
         if not usecustomDice:
-            diceTemplate=generateDice(min_sides, max_sides)
-            diceString = str(sysr.randint(min_dice, max_dice))+diceTemplate
+            diceTemplate = generateDice(min_sides, max_sides)
+            diceAmount = sysr.randint(min_dice, max_dice)
+            diceString = str(diceAmount)+diceTemplate
             choice1 = sysr.choice(["nothing","keep","drop"])
             if choice1 == "keep":
                 choice2 = sysr.choice(["lowest","middle","highest"])
@@ -188,3 +189,10 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             choice3 = sysr.choice(["clamp", "noclamp"])
             if choice3 == "clamp":
                 diceString += conditionHelper("C", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues, False, False, True)
+            if diceAmount <= max_sides-min_sides:
+                choice4 = sysr.choices(["unique","non-unique"],weights=[0.1,0.9],k=1)[0]
+            else:
+                choice4 = "non-unique"
+            if choice4 == "unique":
+                diceString += "U"
+            
