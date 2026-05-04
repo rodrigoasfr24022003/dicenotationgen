@@ -1,4 +1,4 @@
-from dicegen import generateDice
+from generators.dicegen import generateDice
 import random
 sysr = random.SystemRandom()
 def conditionHelper(startString:str,maxConditions:int, min_sides:int, max_sides:int, allow_zero:bool=False, allowNegativeValues:bool=False, useBrackets:bool=True, useCommas:bool=True, noEquality:bool=False):
@@ -143,7 +143,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             if allowZero and allowNegativeValues:
                 diceTemplate=generateDice(min_sides,max_sides, True, -max_sides, max_sides)
             return sysr.randint(min_dice, max_dice)+diceTemplate
-    else:
+    elif advanced:
         if not usecustomDice:
             diceTemplate = generateDice(min_sides, max_sides)
             diceAmount = sysr.randint(min_dice, max_dice)
@@ -245,3 +245,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             for i in diceMorphemes:
                 out += i
             return out
+        else:
+            raise NotImplementedError("Code for advanced custom dice not implemented yet")
+    if allowSubExpressions:
+        raise NotImplementedError("Code for subexpression generation not implemented yet")

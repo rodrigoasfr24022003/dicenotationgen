@@ -1,7 +1,6 @@
-from classes.BinaryTree import BinaryTree
 class BinaryTree:
 
-    def __init__(self, data, left:BinaryTree|None=None, right:BinaryTree|None=None):
+    def __init__(self, data=None, left=None, right=None):
         self._data = data
         self._left = left
         self._right = right
@@ -19,7 +18,7 @@ class BinaryTree:
         return self._left
     
     @left.setter
-    def setLeft(self, left:BinaryTree|None=None):
+    def setLeft(self, left):
         self._left = left
     
     @property
@@ -27,5 +26,5 @@ class BinaryTree:
         return self._left
     
     @right.setter
-    def setLeft(self, right:BinaryTree|None=None):
+    def setLeft(self, right):
         self._right = right
