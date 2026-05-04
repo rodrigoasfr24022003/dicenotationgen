@@ -1,0 +1,10 @@
+{
+    "min_dice_amount": 1,
+    "max_dice_amount": 600,
+    "min_number_amount": 1,
+    "max_number_amount": 600,
+    "min_sides": 2,
+    "max_sides": 600,
+    "min_ops": 1,
+    "max_ops": 12
+}
