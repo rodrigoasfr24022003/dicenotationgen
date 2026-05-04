@@ -1,110 +1,133 @@
 from dicegen import generateDice
 import random
 sysr = random.SystemRandom()
-def conditionHelper(maxConditions:int, min_sides:int, max_sides:int, allow_zero:bool=False, allowNegativeValues:bool=False):
-    out = "D"
+def conditionHelper(startString:str,maxConditions:int, min_sides:int, max_sides:int, allow_zero:bool=False, allowNegativeValues:bool=False, useBrackets:bool=True, useCommas:bool=True, noEquality:bool=False):
+    out = startString
     conditionAmount = sysr.randint(1,min(max_sides,maxConditions))
-    if conditionAmount == 1:
-        condition = sysr.choice(["<",">",""])
-        if condition == "<":
-            conditionArgument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
-        elif condition == ">":
-            conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
-        elif condition == "":
-            conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
-        diceString += "{" + condition + conditionArgument + "}"
-    elif conditionAmount == 2:
-        condition1 = sysr.choice(["<",">",""])
-        if condition1 == "<":
-            condition1Argument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
-            condition2 = sysr.choice([">", ""])
-            if condition2 == ">":
-                condition2Argument = sysr.randint(condition1Argument, max_sides-1)
-            else:
-                condition2Argument = sysr.randint(condition1Argument, max_sides)
-        elif condition1 == ">":
-            condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
-            condition2 = sysr.choice(["<", ""])
-            condition2Argument = sysr.randint(1,condition1Argument)
-        elif condition1 == "":
-            condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
-            condition2 = sysr.choice(["<",">",""])
-            if condition2 == "<":
-                condition2Argument = sysr.choice(list(range(2 if not allow_zero else 1, max_sides)).remove(condition1Argument))
-            if condition2 == ">":
-                condition2Argument = sysr.choice(list(range(1, max_sides-1)).remove(condition1Argument))
-            if condition2 == "":
-                condition2Argument = sysr.choice(list(range(1, max_sides)).remove(condition1Argument))
-        diceString += "{" + condition1 + condition1Argument + "," + condition2 + condition2Argument + "}"
-    elif conditionAmount > 2:
-        conditions = []
-        for i in range(4):
-            if i == 0:
-                conditions.append(sysr.choice(["<",">",""]))
-            elif i == 1:
-                if conditions[0] == "<":
-                    conditions.append(sysr.choice([">",""]))
-                elif conditions[0] == ">":
-                    conditions.append(sysr.choice(["<",""]))
+    if not noEquality:
+        if conditionAmount == 1:
+            condition = sysr.choice(["<",">",""])
+            if condition == "<":
+                conditionArgument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
+            elif condition == ">":
+                conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+            elif condition == "":
+                conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
+            return "{" + condition + conditionArgument + "}"
+        elif conditionAmount == 2:
+            condition1 = sysr.choice(["<",">",""])
+            if condition1 == "<":
+                condition1Argument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
+                condition2 = sysr.choice([">", ""])
+                if condition2 == ">":
+                    condition2Argument = sysr.randint(condition1Argument, max_sides-1)
                 else:
+                    condition2Argument = sysr.randint(condition1Argument, max_sides)
+            elif condition1 == ">":
+                condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+                condition2 = sysr.choice(["<", ""])
+                condition2Argument = sysr.randint(1,condition1Argument)
+            elif condition1 == "":
+                condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
+                condition2 = sysr.choice(["<",">",""])
+                if condition2 == "<":
+                    condition2Argument = sysr.choice(list(range(2 if not allow_zero else 1, max_sides)).remove(condition1Argument))
+                if condition2 == ">":
+                    condition2Argument = sysr.choice(list(range(1, max_sides-1)).remove(condition1Argument))
+                if condition2 == "":
+                    condition2Argument = sysr.choice(list(range(1, max_sides)).remove(condition1Argument))
+            return "{" + condition1 + condition1Argument + "," + condition2 + condition2Argument + "}"
+        elif conditionAmount > 2:
+            conditions = []
+            for i in range(4):
+                if i == 0:
                     conditions.append(sysr.choice(["<",">",""]))
-            elif i > 1:
+                elif i == 1:
+                    if conditions[0] == "<":
+                        conditions.append(sysr.choice([">",""]))
+                    elif conditions[0] == ">":
+                        conditions.append(sysr.choice(["<",""]))
+                    else:
+                        conditions.append(sysr.choice(["<",">",""]))
+                elif i > 1:
+                    if "<" in conditions and ">" in conditions:
+                        conditions.append("")
+                    if "<" in conditions and ">" not in conditions:
+                        conditions.append(sysr.choice([">",""]))
+                    if ">" in conditions and "<" not in conditions:
+                        conditions.append(sysr.choice(["<",""]))
+                    if "<" not in conditions and ">" not in conditions:
+                        conditions.append(sysr.choice(["<",">",""]))
+            conditionArguments = [0,0,0,0]
+            for i in range(len(conditions)):
                 if "<" in conditions and ">" in conditions:
-                    conditions.append("")
+                    if conditions.index("<") < conditions.index(">"):
+                        if conditions[i] == "<":
+                            conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
+                        elif conditions[i] == ">":
+                            conditionArguments[i] = sysr.randint(conditionArguments[i], max_sides)
+                        else:
+                            continue
+                    if conditions.index("<") > conditions.index(">"):
+                        if conditions[i] == ">":
+                            conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+                        elif conditions[i] == "<":
+                            conditionArguments[i] = sysr.randint(min_sides, conditionArguments[i])
+                        else:
+                            continue
                 if "<" in conditions and ">" not in conditions:
-                    conditions.append(sysr.choice([">",""]))
+                    conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
                 if ">" in conditions and "<" not in conditions:
-                    conditions.append(sysr.choice(["<",""]))
-                if "<" not in conditions and ">" not in conditions:
-                    conditions.append(sysr.choice(["<",">",""]))
-        conditionArguments = [0,0,0,0]
-        for i in range(len(conditions)):
-            if "<" in conditions and ">" in conditions:
-                if conditions.index("<") < conditions.index(">"):
-                    if conditions[i] == "<":
-                        conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
-                    elif conditions[i] == ">":
-                        conditionArguments[i] = sysr.randint(conditionArguments[i], max_sides)
-                    else:
-                        continue
-                if conditions.index("<") > conditions.index(">"):
-                    if conditions[i] == ">":
-                        conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
-                    elif conditions[i] == "<":
-                        conditionArguments[i] = sysr.randint(min_sides, conditionArguments[i])
-                    else:
-                        continue
-            if "<" in conditions and ">" not in conditions:
-                conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
-            if ">" in conditions and "<" not in conditions:
-                conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+                    conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+        if noEquality:
+            conditionAmount = sysr.randint(1,2)
+            if conditionAmount == 1:
+                condition = sysr.choice(["<",">"])
+                if condition == "<":
+                    conditionArgument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
+                elif condition == ">":
+                    conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+                return "{" + condition + conditionArgument + "}"
+            elif conditionAmount == 2:
+                condition1 = sysr.choice(["<",">"])
+                if condition1 == "<":
+                    condition1Argument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
+                    condition2 = ">"
+                    condition2Argument = sysr.randint(condition1Argument, max_sides-1)
+                elif condition1 == ">":
+                    condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+                    condition2 = "<"
+                    condition2Argument = sysr.randint(1,condition1Argument)
+                return "{" + condition1 + condition1Argument + "," + condition2 + condition2Argument + "}"
         if not allowNegativeValues:
             values = list(range(1 if not allow_zero else 0,max_sides))
         elif not allow_zero:
             values = list(range(-max_sides,max_sides)).remove(0)
         elif allow_zero:
             values = list(range(-max_sides,max_sides))
-        for i in range(len(conditions)):
-            if conditions[i] == "<":
-                for j in range(1,conditionArguments[i]):
-                    if j in values:
-                        values.remove(j)
-            elif conditions[i] == ">":
-                for j in range(conditionArguments[i], max_sides):
-                    if j in values:
-                        values.remove(j)
-            elif conditions[i] == "":
-                values.remove(conditionArguments[i])
-        aux = []
-        for i in range(conditionAmount):
-            aux.append(conditions[i])
-            aux.append(conditionArguments[i])
-        out += "{"
-        for i in range(len(aux)):
-            out += aux[i]
-            if i>0 and i%2 == 1 and i<len(aux)-1:
-                out += ","
-        return out
+        if conditionAmount > 2:
+            for i in range(len(conditions)):
+                if conditions[i] == "<":
+                    for j in range(1,conditionArguments[i]):
+                        if j in values:
+                            values.remove(j)
+                elif conditions[i] == ">":
+                    for j in range(conditionArguments[i], max_sides):
+                        if j in values:
+                            values.remove(j)
+                elif conditions[i] == "":
+                    values.remove(conditionArguments[i])
+            aux = []
+            for i in range(conditionAmount):
+                aux.append(conditions[i])
+                aux.append(conditionArguments[i])
+            out += "{" if useBrackets else ""
+            for i in range(len(aux)):
+                out += aux[i]
+                if i>0 and i%2 == 1 and i<len(aux)-1 and useCommas:
+                    out += ","
+            out += "}" if useBrackets else ""
+            return out
 def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecustomDice:bool=False, advanced:bool=False, allowSubExpressions:bool=False, allowZero:bool=False, allowNegativeValues:bool=False, maxConditions:int=4):
     if not advanced:
         if not usecustomDice:
@@ -124,7 +147,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
         if not usecustomDice:
             diceTemplate=generateDice(min_sides, max_sides)
             diceString = str(sysr.randint(min_dice, max_dice))+diceTemplate
-            choice1 = sysr.choice(["keep","drop"])
+            choice1 = sysr.choice(["nothing","keep","drop"])
             if choice1 == "keep":
                 choice2 = sysr.choice(["lowest","middle","highest"])
                 if choice2 == "lowest":
@@ -161,4 +184,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
                         diceString += "DH" + str(dropHighest)
                 # Drop Conditions in Sophie's dice are parsed as an OR, not an AND Like the default for literally everything else
                 if choice2 == "condition":
-                    diceString += conditionHelper(maxConditions, min_sides, max_sides, allowZero, allowNegativeValues)
+                    diceString += conditionHelper("D", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues)
+            choice3 = sysr.choice(["clamp", "noclamp"])
+            if choice3 == "clamp":
+                diceString += conditionHelper("C", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues, False, False, True)
