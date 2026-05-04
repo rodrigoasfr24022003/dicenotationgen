@@ -6,29 +6,29 @@ class BinaryTree:
         self._right = right
 
     
-    def data(self):
+    def getData(self):
         return self._data
     
     def setData(self, data):
         self._data = data
     
-    data=property(data, setData)
+    data=property(getData, setData)
 
-    def left(self):
+    def getLeft(self):
         return self._left
     
     def setLeft(self, left):
         self._left = left
     
-    left=property(left, setLeft)
+    left=property(getLeft, setLeft)
 
-    def right(self):
-        return self._left
+    def getRight(self):
+        return self._right
     
     def setRight(self, right):
         self._right = right
     
-    right=property(right, setRight)
+    right=property(getRight, setRight)
 
     def __str__(self):
         if self.left is None and self.right is None:
