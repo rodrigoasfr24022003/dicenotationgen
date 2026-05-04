@@ -6,15 +6,16 @@ def generateExpression(min_sides:int, max_sides:int, min_dice:int, max_dice:int,
     tree = BinaryTree()
     binaryOperators = ["+","-","*","/","^"]
     if treeDepth == 0:
-        tree.data == generateXdY(min_sides, max_sides, min_dice, min_sides)
+        tree.data = generateXdY(min_sides, max_sides, min_dice, max_dice)
     elif treeDepth > 0:
-        for i in range(treeDepth):
-            left = sysr.choice([True,False])
-            right = sysr.choice([True,False])
-            if left or right:
-                tree.data = sysr.choice(binaryOperators)
-            if left:
-                tree.left = sysr.choice(BinaryTree(generateXdY(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit)), generateExpression(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit, treeDepth-1))
-            if right:
-                tree.left = sysr.choice(BinaryTree(generateXdY(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit)), generateExpression(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit, treeDepth-1))
-        return tree
+        left = sysr.choice([True,False])
+        right = sysr.choice([True,False])
+        if left or right:
+            tree.data = sysr.choice(binaryOperators)
+        else:
+            tree.data = generateXdY(min_sides, max_sides, min_dice, max_dice)
+        if left:
+            tree.left = sysr.choice([BinaryTree(generateXdY(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit)), generateExpression(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit, treeDepth-1)])
+        if right:
+            tree.right = sysr.choice([BinaryTree(generateXdY(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit)), generateExpression(min_sides, max_sides, min_dice, max_dice, usecustomDice, advanced, allowSubExpressions, allowZero, allowNegativeValues, maxConditions, diceLadder, minExplosionLimit, maxExplosionLimit, treeDepth-1)])
+    return tree

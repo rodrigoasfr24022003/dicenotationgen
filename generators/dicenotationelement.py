@@ -132,7 +132,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
     if not advanced:
         if not usecustomDice:
             diceTemplate=generateDice(min_sides, max_sides)
-            return sysr.randint(min_dice, max_dice)+diceTemplate
+            return str(sysr.randint(min_dice, max_dice))+diceTemplate
         else:
             if not allowZero and not allowNegativeValues:
                 diceTemplate=generateDice(min_sides,max_sides, True, min_sides, max_sides)
@@ -142,7 +142,7 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
                 diceTemplate=generateDice(min_sides,max_sides, True, min_sides, max_sides, allowNegativeValuesWithoutZero=True)
             if allowZero and allowNegativeValues:
                 diceTemplate=generateDice(min_sides,max_sides, True, -max_sides, max_sides)
-            return sysr.randint(min_dice, max_dice)+diceTemplate
+            return str(sysr.randint(min_dice, max_dice))+diceTemplate
     elif advanced:
         if not usecustomDice:
             diceTemplate = generateDice(min_sides, max_sides)

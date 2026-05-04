@@ -29,3 +29,12 @@ class BinaryTree:
         self._right = right
     
     right=property(right, setRight)
+
+    def __str__(self):
+        if self.left is None and self.right is None:
+            return str(self.data)
+        
+        left_str = str(self.left) if self.left else ""
+        right_str = str(self.right) if self.right else ""
+
+        return f"({left_str}{self.data}{right_str})"
