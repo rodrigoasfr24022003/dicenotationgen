@@ -7,30 +7,30 @@ def conditionHelper(maxConditions:int, min_sides:int, max_sides:int, allow_zero:
     if conditionAmount == 1:
         condition = sysr.choice(["<",">",""])
         if condition == "<":
-            conditionArgument = sysr.randint(2, max_sides)
+            conditionArgument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
         elif condition == ">":
-            conditionArgument = sysr.randint(1, max_sides-1)
+            conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
         elif condition == "":
-            conditionArgument = sysr.randint(1, max_sides)
+            conditionArgument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
         diceString += "{" + condition + conditionArgument + "}"
     elif conditionAmount == 2:
         condition1 = sysr.choice(["<",">",""])
         if condition1 == "<":
-            condition1Argument = sysr.randint(2, max_sides)
+            condition1Argument = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
             condition2 = sysr.choice([">", ""])
             if condition2 == ">":
                 condition2Argument = sysr.randint(condition1Argument, max_sides-1)
             else:
                 condition2Argument = sysr.randint(condition1Argument, max_sides)
         elif condition1 == ">":
-            condition1Argument = sysr.randint(1, max_sides-1)
+            condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
             condition2 = sysr.choice(["<", ""])
             condition2Argument = sysr.randint(1,condition1Argument)
         elif condition1 == "":
-            condition1Argument = sysr.randint(1, max_sides)
+            condition1Argument = sysr.randint(1 if not allow_zero else 0, max_sides) if not allowNegativeValues else sysr.randint(-max_sides, max_sides) if allow_zero else sysr.choice(list(range(-max_sides, max_sides)).remove(0))
             condition2 = sysr.choice(["<",">",""])
             if condition2 == "<":
-                condition2Argument = sysr.choice(list(range(2, max_sides)).remove(condition1Argument))
+                condition2Argument = sysr.choice(list(range(2 if not allow_zero else 1, max_sides)).remove(condition1Argument))
             if condition2 == ">":
                 condition2Argument = sysr.choice(list(range(1, max_sides-1)).remove(condition1Argument))
             if condition2 == "":
@@ -62,23 +62,28 @@ def conditionHelper(maxConditions:int, min_sides:int, max_sides:int, allow_zero:
             if "<" in conditions and ">" in conditions:
                 if conditions.index("<") < conditions.index(">"):
                     if conditions[i] == "<":
-                        conditionArguments[i] = sysr.randint(2, max_sides)
+                        conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
                     elif conditions[i] == ">":
                         conditionArguments[i] = sysr.randint(conditionArguments[i], max_sides)
                     else:
                         continue
                 if conditions.index("<") > conditions.index(">"):
                     if conditions[i] == ">":
-                        conditionArguments[i] = sysr.randint(1, max_sides-1)
+                        conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
                     elif conditions[i] == "<":
                         conditionArguments[i] = sysr.randint(min_sides, conditionArguments[i])
                     else:
                         continue
             if "<" in conditions and ">" not in conditions:
-                conditionArguments[i] = sysr.randint(2, max_sides)
+                conditionArguments[i] = sysr.randint(2 if not allow_zero else 1, max_sides) if not allowNegativeValues else sysr.randint(-max_sides+1, max_sides) if allow_zero else sysr.choice(list(range(-max_sides+1, max_sides)).remove(0))
             if ">" in conditions and "<" not in conditions:
-                conditionArguments[i] = sysr.randint(1, max_sides-1)
-        values = list(range(1,max_sides))
+                conditionArguments[i] = sysr.randint(1 if not allow_zero else 0, max_sides-1) if not allowNegativeValues else sysr.randint(-max_sides, max_sides-1) if allow_zero else sysr.choice(list(range(-max_sides, max_sides-1)).remove(0))
+        if not allowNegativeValues:
+            values = list(range(1 if not allow_zero else 0,max_sides))
+        elif not allow_zero:
+            values = list(range(-max_sides,max_sides)).remove(0)
+        elif allow_zero:
+            values = list(range(-max_sides,max_sides))
         for i in range(len(conditions)):
             if conditions[i] == "<":
                 for j in range(1,conditionArguments[i]):
@@ -91,13 +96,13 @@ def conditionHelper(maxConditions:int, min_sides:int, max_sides:int, allow_zero:
             elif conditions[i] == "":
                 values.remove(conditionArguments[i])
         aux = []
-        for i in range(maxConditions):
+        for i in range(conditionAmount):
             aux.append(conditions[i])
             aux.append(conditionArguments[i])
         out += "{"
         for i in range(len(aux)):
             out += aux[i]
-            if i>0 and i%2 == 1:
+            if i>0 and i%2 == 1 and i<len(aux)-1:
                 out += ","
         return out
 def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecustomDice:bool=False, advanced:bool=False, allowSubExpressions:bool=False, allowZero:bool=False, allowNegativeValues:bool=False, maxConditions:int=4):
