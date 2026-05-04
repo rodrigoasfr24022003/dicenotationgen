@@ -128,7 +128,7 @@ def conditionHelper(startString:str,maxConditions:int, min_sides:int, max_sides:
                     out += ","
             out += "}" if useBrackets else ""
             return out
-def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecustomDice:bool=False, advanced:bool=False, allowSubExpressions:bool=False, allowZero:bool=False, allowNegativeValues:bool=False, maxConditions:int=4):
+def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecustomDice:bool=False, advanced:bool=False, allowSubExpressions:bool=False, allowZero:bool=False, allowNegativeValues:bool=False, maxConditions:int=4, diceLadder:str="Evens", minExplosionLimit:int = 1, maxExplosionLimit:int = 6):
     if not advanced:
         if not usecustomDice:
             diceTemplate=generateDice(min_sides, max_sides)
@@ -148,51 +148,78 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             diceTemplate = generateDice(min_sides, max_sides)
             diceAmount = sysr.randint(min_dice, max_dice)
             diceString = str(diceAmount)+diceTemplate
+            diceMorphemes = []
+            diceMorphemes.append(diceString)
             choice1 = sysr.choice(["nothing","keep","drop"])
             if choice1 == "keep":
                 choice2 = sysr.choice(["lowest","middle","highest"])
                 if choice2 == "lowest":
                     keepLowest = sysr.randint(1,max_dice-1)
                     if keepLowest == 1:
-                        diceString += "KL"
+                        diceMorphemes.append("KL")
                     else:
-                        diceString += "KL" + str(keepLowest)
+                        diceMorphemes.append("KL" + str(keepLowest))
                 if choice2 == "middle":
                     keepMiddle = sysr.randint(1,max_dice-1)
                     if keepMiddle == 1:
-                        diceString += "KM"
+                        diceMorphemes.append("KM")
                     else:
-                        diceString += "KM" + str(keepMiddle)
+                        diceMorphemes.append("KM" + str(keepMiddle))
                 if choice2 == "highest":
                     keepHighest = sysr.randint(1,max_dice-1)
                     if keepHighest == 1:
-                        diceString += "KH"
+                        diceMorphemes.append("KH")
                     else:
-                        diceString += "KH" + str(keepHighest)
+                        diceMorphemes.append("KH" + str(keepHighest))
             if choice1 == "drop":
                 choice2 == sysr.choice(["lowest", "highest", "condition"])
                 if choice2 == "lowest":
                     dropLowest = sysr.randint(1,max_dice-1)
                     if dropLowest == 1:
-                        diceString += "DL"
+                        diceMorphemes.append("DL")
                     else:
-                        diceString += "DL" + str(dropLowest)
+                        diceMorphemes.append("DL" + str(dropLowest))
                 if choice2 == "highest":
                     dropHighest = sysr.randint(1,max_dice-1)
                     if dropHighest == 1:
-                        diceString += "DH"
+                        diceMorphemes.append("DH")
                     else:
-                        diceString += "DH" + str(dropHighest)
+                        diceMorphemes.append("DH" + str(dropHighest))
                 # Drop Conditions in Sophie's dice are parsed as an OR, not an AND Like the default for literally everything else
                 if choice2 == "condition":
-                    diceString += conditionHelper("D", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues)
+                    diceMorphemes.append( conditionHelper("D", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues) )
             choice3 = sysr.choice(["clamp", "noclamp"])
             if choice3 == "clamp":
-                diceString += conditionHelper("C", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues, False, False, True)
+                diceMorphemes.append( conditionHelper("C", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues, False, False, True) )
             if diceAmount <= max_sides-min_sides:
                 choice4 = sysr.choices(["unique","non-unique"],weights=[0.1,0.9],k=1)[0]
             else:
                 choice4 = "non-unique"
             if choice4 == "unique":
-                diceString += "U"
+                diceMorphemes.append("U")
+            choice5 = sysr.choice(["calm", "explosive", "inflating", "reducing"])
+            isDisregarding = sysr.choices([True, False],weights=[0.1,0.9],k=1)[0]
+            #no pattern support yet
+            explosionSubmorphemes = []
+            if choice5 == "explosive":
+                explosionSubmorphemes.append("!")
+                choice6 = sysr.choice(["conditional", "unconditional"])
+                if choice6 == "conditional":
+                    explosionSubmorphemes.append(conditionHelper("", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues))
+                isLimited = sysr.choices([True, False],weights=[0.1,0.9],k=1)[0]
+                if isLimited:
+                    explosionSubmorphemes.append(str(sysr.randint(minExplosionLimit,maxExplosionLimit)))
+            elif choice5 == "inflating":
+                explosionSubmorphemes.append("!!")
+                choice6 = sysr.choice(["conditional", "unconditional"])
+                if choice6 == "conditional":
+                    explosionSubmorphemes.append(conditionHelper("", maxConditions, min_sides, max_sides, allowZero, allowNegativeValues))
+            elif choice5 == "reducing":
+                explosionSubmorphemes.append("!!!")
+            if isDisregarding:
+                explosionSubmorphemes.append(".")
+            explosionString = ""
+            for i in explosionSubmorphemes:
+                explosionString += i
+            diceMorphemes.append(explosionString)
             
