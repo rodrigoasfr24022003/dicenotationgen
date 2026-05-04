@@ -4,27 +4,28 @@ class BinaryTree:
         self._data = data
         self._left = left
         self._right = right
+
     
-    @property
     def data(self):
         return self._data
     
-    @data.setter
     def setData(self, data):
         self._data = data
     
-    @property
+    data=property(data, setData)
+
     def left(self):
         return self._left
     
-    @left.setter
     def setLeft(self, left):
         self._left = left
     
-    @property
+    left=property(left, setLeft)
+
     def right(self):
         return self._left
     
-    @right.setter
-    def setLeft(self, right):
+    def setRight(self, right):
         self._right = right
+    
+    right=property(right, setRight)
