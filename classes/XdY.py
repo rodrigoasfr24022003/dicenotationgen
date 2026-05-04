@@ -1,7 +1,7 @@
 from classes.Dice import Dice
 class XdY:
 
-    def __init__(self, x:int, y:Dice, keepHighest:int|None=None, keepLowest:int|None=None, keepMiddle:int|None=None, dropHighest:int|None=None, dropLowest:int|None=None, dropCondition:function|None=None, clampCondition:function|None=None, unique:bool=False, uniqueExclusions:function|None=None, explosiveCondition:function|None=None, explosionLimit:int=-1, inflate:bool=False, inflateType:str|None = None, reduce:bool=False, conditionsDisregardExplodedDice:bool=True, rerollCondition:function|None=None, rerollLimit:int=-1, countCondition:function|None=None, convertToString:str|None=None):
+    def __init__(self, x:int, y:Dice, keepHighest:int|None=None, keepLowest:int|None=None, keepMiddle:int|None=None, dropHighest:int|None=None, dropLowest:int|None=None, dropCondition:str|None=None, clampCondition:str|None=None, unique:bool=False, uniqueExclusions:str|None=None, explosiveCondition:str|None=None, explosionLimit:int=-1, inflate:bool=False, inflateType:str|None = None, reduce:bool=False, conditionsDisregardExplodedDice:bool=True, rerollCondition:str|None=None, rerollLimit:int=-1, countCondition:str|None=None, convertToString:str|None=None):
         self._x = x
         self._y = y
         self._keepHighest = keepHighest
