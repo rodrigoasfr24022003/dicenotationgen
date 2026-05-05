@@ -37,7 +37,7 @@ It supports the following features:
     ```cmd
     py <PATH_TO_main.py>
     ```
-    2. On Unix systems (exaples are MacOS or Linux):
+    2. On Unix systems (examples are MacOS or Linux):
     ```sh
     python3 <PATH_TO_main.py>
     ```
