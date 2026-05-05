@@ -1,10 +1,19 @@
 {
- "min_dice_amount": 1,
- "max_dice_amount": 20,
- "min_number_amount": 1,
- "max_number_amount": 20,
- "min_sides": 1,
- "max_sides": 20,
- "min_ops": 1,
- "max_ops": 20
+    "min_dice_amount": 1,
+    "max_dice_amount": 20,
+    "min_number_amount": 1,
+    "max_number_amount": 20,
+    "min_sides": 1,
+    "max_sides": 20,
+    "min_tree_depth": 1,
+    "max_tree_depth": 20,
+    "custom_dice": false,
+    "advanced": false,
+    "allow_sub_expressions": false,
+    "allow_zero": false,
+    "allow_negative_values": false,
+    "max_conditions": 6,
+    "dice_ladder": "Evens",
+    "min_explosion_limit": 1,
+    "max_explosion_limit": 6
 }

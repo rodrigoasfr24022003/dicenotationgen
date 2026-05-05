@@ -5,6 +5,15 @@
     "max_number_amount": 36,
     "min_sides": 2,
     "max_sides": 36,
-    "min_ops": 1,
-    "max_ops": 6
+    "min_tree_depth": 1,
+    "max_tree_depth": 6,
+    "custom_dice": false,
+    "advanced": false,
+    "allow_sub_expressions": false,
+    "allow_zero": false,
+    "allow_negative_values": false,
+    "max_conditions": 6,
+    "dice_ladder": "Evens",
+    "min_explosion_limit": 1,
+    "max_explosion_limit": 6
 }
