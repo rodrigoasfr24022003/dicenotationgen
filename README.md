@@ -26,7 +26,7 @@ It supports the following features:
 *WARNING: preset editing isn't supported yet, unless you know JSON and have a text editor*
 
 ## How to use
-*<PATH_TO_main.py> represents where your `main.py` is*
+*`<PATH_TO_main.py>` represents where your `main.py` is*
 1. Download the source code (whether it's via release or via the green `Code` button.)
 2. Run the following commands:
     1. On Windows:
