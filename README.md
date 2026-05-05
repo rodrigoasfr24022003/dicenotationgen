@@ -1,9 +1,10 @@
 # Dice Notation Generator for *Sophie's Dice* (incomplete)
-*It only works if you don't mind tinkering with main.py, support for command-line execution will be added tomorrow*
 
 Sophie's Dice and its documentation are made by Sophie Houlden, I'm just making this notation generator.
 
 **IMPORTANT DISCLAIMER: This is not an official Sophie's Dice product.**
+
+## Features
 
 It supports the following features:
 * Basic dice
@@ -21,3 +22,27 @@ It supports the following features:
     * Variables and constants
     * User Values
     * Roll condition parameters
+
+*WARNING: preset editing isn't supported yet, unless you know JSON and have a text editor*
+
+## How to use
+*<PATH_TO_main.py> represents where your `main.py` is*
+1. Download the source code (whether it's via release or via the green `Code` button.)
+2. Run the following commands:
+    1. On Windows:
+    ```cmd
+    python <PATH_TO_main.py>
+    ```
+    Or if you're using the Python install manager instead of a standalone python version:
+    ```cmd
+    py <PATH_TO_main.py>
+    ```
+    2. On Unix systems (exaples are MacOS or Linux):
+    ```sh
+    python3 <PATH_TO_main.py>
+    ```
+3. You should be prompted with 3 inputs: first one for the preset's file name, second one for the output's file name and third one for the amount of lines on the text file.
+
+## Warnings
+
+* Do not use an excessive tree depth nor an excessive line amount (nor both), it will eat your disk space!
