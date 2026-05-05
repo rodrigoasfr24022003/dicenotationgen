@@ -175,19 +175,19 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             if choice1 == "keep":
                 choice2 = sysr.choice(["lowest","middle","highest"])
                 if choice2 == "lowest":
-                    keepLowest = sysr.randint(1,max_dice-1)
+                    keepLowest = sysr.randint(1,diceAmount-1) if diceAmount > 1 else 1
                     if keepLowest == 1:
                         diceMorphemes.append("KL")
                     else:
                         diceMorphemes.append("KL" + str(keepLowest))
                 if choice2 == "middle":
-                    keepMiddle = sysr.randint(1,max_dice-1)
+                    keepMiddle = sysr.randint(1,diceAmount-1) if diceAmount > 1 else 1
                     if keepMiddle == 1:
                         diceMorphemes.append("KM")
                     else:
                         diceMorphemes.append("KM" + str(keepMiddle))
                 if choice2 == "highest":
-                    keepHighest = sysr.randint(1,max_dice-1)
+                    keepHighest = sysr.randint(1,diceAmount-1) if diceAmount > 1 else 1
                     if keepHighest == 1:
                         diceMorphemes.append("KH")
                     else:
@@ -195,13 +195,13 @@ def generateXdY(min_sides:int, max_sides:int, min_dice:int, max_dice:int, usecus
             if choice1 == "drop":
                 choice2 = sysr.choice(["lowest", "highest", "condition"])
                 if choice2 == "lowest":
-                    dropLowest = sysr.randint(1,max_dice-1)
+                    dropLowest = sysr.randint(1,diceAmount-1) if diceAmount > 1 else 1
                     if dropLowest == 1:
                         diceMorphemes.append("DL")
                     else:
                         diceMorphemes.append("DL" + str(dropLowest))
                 if choice2 == "highest":
-                    dropHighest = sysr.randint(1,max_dice-1)
+                    dropHighest = sysr.randint(1,diceAmount-1) if diceAmount > 1 else 1
                     if dropHighest == 1:
                         diceMorphemes.append("DH")
                     else:
