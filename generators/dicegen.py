@@ -6,7 +6,8 @@ def generateDice(min_sides:int,max_sides:int,customSides:bool=False,minCustomSid
             min_sides_copy = min_sides
             min_sides = max_sides
             max_sides = min_sides_copy
-        return 'd'+str(sysr.randint(min_sides,max_sides))
+        sides = sysr.randint(min_sides,max_sides)
+        return ('d'+str(sides),sides)
     else:
         sideAmount = sysr.randint(min_sides,max_sides)
         sideDict = {i:str(i) for i in range(1,sideAmount+1)}
